@@ -13,14 +13,32 @@ pipeline {
         ansiColor('xterm')
     }
     stages {
-        stage('Job description') {
+        stage('Git'){
+            steps {
+                git 'https://github.com/Ozz007/sb3t'
+            }
+        }
+        stage('Build') { 
             steps {
                 script {
-                    println('Env var: ' + env.TEST)
-                    sh 'java --version'
-                    sh 'mvn --version'
-                    sh 'python3 --version'
-                    currentBuild.displayName = "#${BUILD_NUMBER} ${params.PARAM1}"
+                    sh 'mvn clean compile'
+                }
+            }
+        }
+        stage('Test') { 
+            when {
+                expression {params.SKIP_TESTS == false}
+            }
+            steps {
+                script {
+                    sh 'mvn test'
+                }
+            }
+        }
+        stage('Package') { 
+            steps {
+                script {
+                    sh 'mvn package'
                 }
             }
         }
