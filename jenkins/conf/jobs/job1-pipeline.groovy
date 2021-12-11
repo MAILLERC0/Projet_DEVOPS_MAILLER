@@ -13,7 +13,7 @@ pipeline {
         ansiColor('xterm')
     }
     stages {
-        stage('Git clone of project'){
+        stage('Git'){
             steps {
                 git 'https://github.com/Ozz007/sb3t'
             }
