@@ -13,33 +13,32 @@ pipeline {
         ansiColor('xterm')
     }
     stages {
-        stage('Git'){
+        stage('Git clone of project'){
             steps {
                 git 'https://github.com/Ozz007/sb3t'
             }
         }
         stage('Build') { 
             steps {
-                script {
-                    sh 'mvn clean compile'
-                }
+                sh 'mvn clean compile'
             }
         }
-        stage('Test') { 
+        stage('RUN Tests') { 
             when {
                 expression {params.SKIP_TESTS == false}
             }
             steps {
-                script {
-                    sh 'mvn test'
-                }
+                sh 'mvn test'
             }
         }
-        stage('Package') { 
+        stage('Jar creation') { 
             steps {
-                script {
-                    sh 'mvn package'
-                }
+                sh 'mvn package'
+            }
+        }
+        stage('Move .jar in Jenkins Workspace'){                         
+            steps{  
+                sh "mv /var/jenkins_home/workspace/CI/Job1/sb3t-ws/target/sb3t-ws-1.0-SNAPSHOT.jar /var/jenkins_home/workspace/CI/Job1/${params.'VERSION'}-${params.'VERSION_TYPE'}"
             }
         }
     }
