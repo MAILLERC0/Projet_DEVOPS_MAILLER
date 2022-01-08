@@ -12,7 +12,7 @@ terraform {
 provider "aws" {
   profile                 = "default"
   region                  = "us-east-2"
-  shared_credentials_file = "~/.aws/credentials-ynov"
+  shared_credentials_file = "./credential"
 }
 
 data "template_file" "user_data" {
@@ -47,7 +47,7 @@ resource "aws_security_group" "allow_SSH_cloud-init" {
   ingress {
     description      = "SSH from VPC"
     from_port        = 22
-    to_port          = 8080
+    to_port          = 22
     protocol         = "tcp"
     cidr_blocks      = ["0.0.0.0/0"]
     ipv6_cidr_blocks = ["::/0"]
@@ -57,6 +57,15 @@ resource "aws_security_group" "allow_SSH_cloud-init" {
     from_port        = 0
     to_port          = 0
     protocol         = "-1"
+    cidr_blocks      = ["0.0.0.0/0"]
+    ipv6_cidr_blocks = ["::/0"]
+  }
+
+  ingress {
+    description      = "SSH from VPC"
+    from_port        = 8080
+    to_port          = 8080
+    protocol         = "tcp"
     cidr_blocks      = ["0.0.0.0/0"]
     ipv6_cidr_blocks = ["::/0"]
   }
