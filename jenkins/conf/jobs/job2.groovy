@@ -4,6 +4,13 @@ def pipelineScript = new File('/var/jenkins_config/jobs/job2-pipeline.groovy').g
 
 pipelineJob('IaC/Job2') {
     description("Job Pipline 2 - Terraform")
+    parameters {    
+        choice {
+            name('action')
+            choices(['apply', 'destroy'])
+            description("apply or destroy")
+        }
+    }
     definition {
         cps {
             script(pipelineScript)
