@@ -1,11 +1,13 @@
 #cloud-config
 groups:
   - deploy
+  - hashicorp
 users:
   - default
   - name: deploy
     gecos: "user de deploiement"
     shell: /bin/bash
+    primary_group: hashicorp
     sudo: ALL=(ALL) NOPASSWD:ALL
     primary-group: deploy
     lock_passwd: false
