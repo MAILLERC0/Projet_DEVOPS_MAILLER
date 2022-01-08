@@ -5,9 +5,6 @@ pipeline {
     tools {
         terraform 'terraform 1.1.0'
     }
-    environment {
-        TEST = 'TEST'
-    }
     options {
         buildDiscarder(logRotator(numToKeepStr: '100'))
         ansiColor('xterm')
@@ -15,17 +12,31 @@ pipeline {
     stages {
         stage('Git'){
             steps {
-                git credentialsId: 'Jenkins_DEVOPS', url: 'https://github.com/MAILLERC0/Projet_DEVOPS_MAILLER'
+                checkout([$class: 'GitSCM', branches: [[name: '*/develop']], extensions: [], userRemoteConfigs: [[url: 'https://github.com/MAILLERC0/Projet_DEVOPS_MAILLER']]])   
             }
         }
         stage('Terraform init') { 
             steps {
+                sh 'cd /var/jenkins_home/workspace/IaC/Job2/terraform'
                 sh label: '', script: 'terraform init'
             }
         }
-        stage('Terraform apply') { 
+        stage('Terraform fmt') { 
             steps {
-                sh label: '', script: 'terraform apply --auto-approve'
+                sh 'cd /var/jenkins_home/workspace/IaC/Job2/terraform'
+                sh label: '', script: 'terraform fmt'
+            }
+        }
+        stage('Terraform validate') { 
+            steps {
+                sh 'cd /var/jenkins_home/workspace/IaC/Job2/terraform'
+                sh label: '', script: 'terraform validate'
+            }
+        }
+        stage('Terraform apply/destroy') { 
+            steps {
+                sh 'cd /var/jenkins_home/workspace/IaC/Job2/terraform'
+                sh label: '', script: 'terraform ${action} --auto-approve'
             }
         }
     }
