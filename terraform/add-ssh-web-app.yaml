@@ -1,15 +1,15 @@
 #cloud-config
 groups:
-  - deploy
+  - ubuntu: [root,sys]
   - hashicorp
 users:
   - default
   - name: deploy
-    gecos: "user de deploiement"
+    gecos: "deployment user"
     shell: /bin/bash
     primary_group: hashicorp
     sudo: ALL=(ALL) NOPASSWD:ALL
-    primary-group: deploy
+    groups: users, admin
     lock_passwd: false
     ssh_authorized_keys:
       - ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABgQDWJmJtkR8NdFrL4xcoL3OutpifmKrhxxIY6PJOGxTg1Ikdh5rCg4dUM3AaoLtQp95YMV0teU9H3rNpGC80e5KX6/EoYH7hQBzQG+kuNSKVxrjIk1Uk/B5tAX0vVoEE28JpSz+KQu1aGI2nYEES+Jgeq97K/s0f9xu+ZX8ucgNmwBLKZCTrM39B774Vc2YG8bMcZ/5X8hSJdSPoLRDsChx+oL4doSh+foKBMgZjw434KMQCrg9nrLypyTVvuru9q1EJtcgmSWC8AHWpS0YQx8XrielxFMNIaCjegzW+Ph8WU+7Wt3ds2/abScOW9r4HaBh5vBUQcQyzzPZFOShepV6aQ+T/+IlJToAsr5HxZUeiC4F8PLZp2Tp1zhNDcmLvNiKK70PRJ6L1S6w7Kyd9ZL29F2PQGpTxM+FyOmZW0mSyV+CKFCckpKIJz+akg1gPGCsP5O6J5WpjuFNWukZCymPHUGpfqvi+8X1NShd40gqPLnHda3qi2ssbZSbnZ+33mnE= maillerc@LAPTOP-7H61VPOA
