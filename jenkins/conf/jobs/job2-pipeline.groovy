@@ -3,7 +3,7 @@
 pipeline {
     agent any
     tools {
-        terraform 'terraform 1.1.0'
+        terraform 'terraform-11'
     }
     options {
         buildDiscarder(logRotator(numToKeepStr: '100'))
@@ -15,27 +15,29 @@ pipeline {
                 checkout([$class: 'GitSCM', branches: [[name: '*/develop']], extensions: [], userRemoteConfigs: [[url: 'https://github.com/MAILLERC0/Projet_DEVOPS_MAILLER']]])   
             }
         }
+        stage('mv terraform folder') {
+            steps {
+                sh 'cp -r ./terraform/* .'
+            }
+        }
         stage('Terraform init') { 
             steps {
-                sh 'cd /var/jenkins_home/workspace/IaC/Job2/terraform'
                 sh label: '', script: 'terraform init'
             }
         }
         stage('Terraform fmt') { 
             steps {
-                sh 'cd /var/jenkins_home/workspace/IaC/Job2/terraform'
                 sh label: '', script: 'terraform fmt'
             }
         }
         stage('Terraform validate') { 
             steps {
-                sh 'cd /var/jenkins_home/workspace/IaC/Job2/terraform'
                 sh label: '', script: 'terraform validate'
             }
         }
         stage('Terraform apply/destroy') { 
             steps {
-                sh 'cd /var/jenkins_home/workspace/IaC/Job2/terraform'
+                sh 'ls'
                 sh label: '', script: 'terraform ${action} --auto-approve'
             }
         }

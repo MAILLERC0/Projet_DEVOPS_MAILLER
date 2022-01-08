@@ -25,7 +25,7 @@ resource "aws_instance" "app_server" {
   count                       = 1
   key_name                    = "ssh_MAILLER_cloud-init"
   associate_public_ip_address = "true"
-  vpc_security_group_ids      = [aws_security_group.allow_SSH_cloud-init.id,aws_security_group.allow_SSH_http.id]
+  vpc_security_group_ids      = [aws_security_group.allow_SSH_cloud-init.id]
   user_data                   = data.template_file.user_data.rendered
 
   tags = {
