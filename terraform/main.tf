@@ -22,7 +22,7 @@ resource "aws_instance" "app_server" {
   ami                         = "ami-0d97ef13c06b05a19"
   instance_type               = "t2.micro"
   count                       = 1
-  key_name                    = "ssh_cloud-init_MAILLER"
+  key_name                    = "ssh_cloud-init_CMAILLER"
   associate_public_ip_address = "true"
   vpc_security_group_ids      = [aws_security_group.allow_SSH_CM.id,aws_security_group.allow_http_CM.id]
   user_data                   = data.template_file.user_data.rendered
@@ -35,7 +35,7 @@ resource "aws_instance" "app_server" {
 }
 
 resource "aws_key_pair" "deployer" {
-  key_name   = "ssh_cloud-init_MAILLER"
+  key_name   = "ssh_cloud-init_CMAILLER"
   public_key = file("./ssh/id_rsa.pub")
 }
 
