@@ -1,0 +1,8 @@
+apache_ip: "*"
+apache_port: 8080
+apache_serverName: www.test_apache_ansible_DEVOPS_CM.com
+apache_serverAlias: CM_apache_Ansible.com
+apache_documentRoot: "/var/www/html"
+apache_allowOverride: "All"
+apache_options: "-Indexes +FollowSymLinks"
+

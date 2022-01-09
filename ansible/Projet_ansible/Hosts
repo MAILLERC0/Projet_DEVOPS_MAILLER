@@ -1,0 +1,7 @@
+[host:vars]
+ansible_user=deploy
+ansible_port=22
+
+[host]
+52.14.128.183
+

@@ -1,0 +1,43 @@
+- name: Installation de HTTPD
+  package:
+    name : httpd
+    state : present
+  notify : Service httpd restart
+
+- name: Démarrage d'apache
+  shell: systemctl start httpd
+
+- name: Supression des fichiers de configuration inutiles
+  file:
+    state : absent
+    path : '/etc/httpd/conf.d/{{ item }}'
+  with_items:
+    - autoindex.conf
+    - userdir.conf
+    - welcome.conf
+  notify : Service httpd restart
+
+- name: Modification du Port dans la conf httpd
+  lineinfile:
+    path: /etc/httpd/conf/httpd.conf
+    regexp: '^Listen 80'
+    line: Listen 8080
+  notify : Service httpd restart
+
+- name : Copie du fichier de config dans config.d
+  template:
+    src: 'virtual_host.conf.j2'
+    dest: '/etc/httpd/conf.d/virtual_host.conf'
+  notify : Service httpd restart
+
+- name : Déplacement du fichier de index.html dans public_html
+  copy:
+    src: 'index.html'
+    dest: '/var/www/html/index.html'
+  notify : Service httpd restart
+
+
+
+
+
+

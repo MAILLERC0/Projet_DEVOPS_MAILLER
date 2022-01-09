@@ -1,0 +1,14 @@
+<VirtualHost {{apache_ip}}:{{apache_port}}>
+
+  ServerName {{apache_serverName}}
+  ServerAlias {{apache_serverAlias}}
+  DocumentRoot {{apache_documentRoot}}
+<Directory "{{ apache_documentRoot }}">
+    AllowOverride {{ apache_allowOverride }}
+    Options {{ apache_options }}
+    Order allow,deny
+    Allow from all
+    Require all granted
+  </Directory>
+
+</VirtualHost>

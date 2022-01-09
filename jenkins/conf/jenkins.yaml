@@ -83,3 +83,4 @@ jobs:
   - file: /var/jenkins_config/jobs/folders.groovy
   - file: /var/jenkins_config/jobs/job1.groovy
   - file: /var/jenkins_config/jobs/job2.groovy
+  - file: /var/jenkins_config/jobs/job3.groovy

@@ -22,9 +22,9 @@ resource "aws_instance" "app_server" {
   ami                         = "ami-0d97ef13c06b05a19"
   instance_type               = "t2.micro"
   count                       = 1
-  key_name                    = "ssh_MAILLER_cloud-init"
+  key_name                    = "ssh_cloud-init_MAILLER"
   associate_public_ip_address = "true"
-  vpc_security_group_ids      = [aws_security_group.allow_SSH_cloud-init.id]
+  vpc_security_group_ids      = [aws_security_group.allow_SSH_CM.id,ws_security_group.allow_http_CM.id]
   user_data                   = data.template_file.user_data.rendered
 
   tags = {
@@ -35,11 +35,11 @@ resource "aws_instance" "app_server" {
 }
 
 resource "aws_key_pair" "deployer" {
-  key_name   = "ssh_MAILLER_cloud-init"
+  key_name   = "ssh_cloud-init_MAILLER"
   public_key = file("./ssh/id_rsa.pub")
 }
 
-resource "aws_security_group" "allow_SSH_cloud-init" {
+resource "aws_security_group" "allow_SSH_CM" {
   name        = "allow_SSH_MAILLER_cloud-init"
   description = "Allow SSH inbound traffic"
 
@@ -47,6 +47,32 @@ resource "aws_security_group" "allow_SSH_cloud-init" {
     description      = "SSH from VPC"
     from_port        = 22
     to_port          = 22
+    protocol         = "tcp"
+    cidr_blocks      = ["0.0.0.0/0"]
+    ipv6_cidr_blocks = ["::/0"]
+  }
+  egress {
+    from_port        = 0
+    to_port          = 0
+    protocol         = "-1"
+    cidr_blocks      = ["0.0.0.0/0"]
+    ipv6_cidr_blocks = ["::/0"]
+  }
+
+  tags = {
+    Name   = var.instance_name
+    Groups = "app"
+    Owner  = "MAILLER Corentin"
+  }
+
+  resource "aws_security_group" "allow_http_CM" {
+  name        = "allow_HTTP_MAILLER"
+  description = "Allow HTTP for apache"
+
+  ingress {
+    description      = "http from VPC"
+    from_port        = 8080
+    to_port          = 8080
     protocol         = "tcp"
     cidr_blocks      = ["0.0.0.0/0"]
     ipv6_cidr_blocks = ["::/0"]
@@ -60,18 +86,10 @@ resource "aws_security_group" "allow_SSH_cloud-init" {
     ipv6_cidr_blocks = ["::/0"]
   }
 
-  ingress {
-    description      = "SSH from VPC"
-    from_port        = 8080
-    to_port          = 8080
-    protocol         = "tcp"
-    cidr_blocks      = ["0.0.0.0/0"]
-    ipv6_cidr_blocks = ["::/0"]
-  }
-
   tags = {
     Name   = var.instance_name
     Groups = "app"
     Owner  = "MAILLER Corentin"
+  }
   }
 }
