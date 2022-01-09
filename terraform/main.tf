@@ -64,7 +64,7 @@ resource "aws_security_group" "allow_SSH_CM" {
     Groups = "app"
     Owner  = "MAILLER Corentin"
   }
-
+}
   resource "aws_security_group" "allow_http_CM" {
   name        = "allow_HTTP_MAILLER"
   description = "Allow HTTP for apache"
@@ -90,6 +90,5 @@ resource "aws_security_group" "allow_SSH_CM" {
     Name   = var.instance_name
     Groups = "app"
     Owner  = "MAILLER Corentin"
-  }
   }
 }
