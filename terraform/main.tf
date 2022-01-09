@@ -40,7 +40,7 @@ resource "aws_key_pair" "deployer" {
 }
 
 resource "aws_security_group" "allow_SSH_CM" {
-  name        = "allow_SSH_MAILLER_cloud-init"
+  name        = "allow_SSH_CMAILLER"
   description = "Allow SSH inbound traffic"
 
   ingress {
@@ -66,7 +66,7 @@ resource "aws_security_group" "allow_SSH_CM" {
   }
 }
   resource "aws_security_group" "allow_http_CM" {
-  name        = "allow_HTTP_MAILLER"
+  name        = "allow_http_CMAILLER"
   description = "Allow HTTP for apache"
 
   ingress {
