@@ -24,7 +24,7 @@ resource "aws_instance" "app_server" {
   count                       = 1
   key_name                    = "ssh_cloud-init_CMAILLER"
   associate_public_ip_address = "true"
-  vpc_security_group_ids      = [aws_security_group.allow_SSH_CM.id,aws_security_group.allow_http_CM.id]
+  vpc_security_group_ids      = [aws_security_group.allow_SSH_CMAILLER.id,aws_security_group.allow_http_CMAILLER.id]
   user_data                   = data.template_file.user_data.rendered
 
   tags = {
@@ -39,7 +39,7 @@ resource "aws_key_pair" "deployer" {
   public_key = file("./ssh/id_rsa.pub")
 }
 
-resource "aws_security_group" "allow_SSH_CM" {
+resource "aws_security_group" "allow_SSH_CMAILLER" {
   name        = "allow_SSH_CMAILLER"
   description = "Allow SSH inbound traffic"
 
@@ -65,7 +65,7 @@ resource "aws_security_group" "allow_SSH_CM" {
     Owner  = "MAILLER Corentin"
   }
 }
-  resource "aws_security_group" "allow_http_CM" {
+  resource "aws_security_group" "allow_http_CMAILLER" {
   name        = "allow_http_CMAILLER"
   description = "Allow HTTP for apache"
 
