@@ -22,9 +22,9 @@ resource "aws_instance" "app_server" {
   ami                         = "ami-0d97ef13c06b05a19"
   instance_type               = "t2.micro"
   count                       = 1
-  key_name                    = "ssh_cloud-init_CMAILLER"
+  key_name                    = "deployer_MAILLERC"
   associate_public_ip_address = "true"
-  vpc_security_group_ids      = [aws_security_group.allow_SSH_CMAILLER.id,aws_security_group.allow_http_CMAILLER.id]
+  vpc_security_group_ids      = [aws_security_group.SSH_MAILLERC.id,aws_security_group.HTTP_MAILLERC.id]
   user_data                   = data.template_file.user_data.rendered
 
   tags = {
@@ -35,12 +35,12 @@ resource "aws_instance" "app_server" {
 }
 
 resource "aws_key_pair" "deployer" {
-  key_name   = "ssh_cloud-init_CMAILLER"
+  key_name   = "deployer_MAILLERC"
   public_key = file("./ssh/id_rsa.pub")
 }
 
-resource "aws_security_group" "allow_SSH_CMAILLER" {
-  name        = "allow_SSH_CMAILLER"
+resource "aws_security_group" "SSH_MAILLERC" {
+  name        = "SSH_MAILLERC"
   description = "Allow SSH inbound traffic"
 
   ingress {
@@ -65,8 +65,8 @@ resource "aws_security_group" "allow_SSH_CMAILLER" {
     Owner  = "MAILLER Corentin"
   }
 }
-  resource "aws_security_group" "allow_http_CMAILLER" {
-  name        = "allow_http_CMAILLER"
+  resource "aws_security_group" "HTTP_MAILLERC" {
+  name        = "HTTP_MAILLERC"
   description = "Allow HTTP for apache"
 
   ingress {
