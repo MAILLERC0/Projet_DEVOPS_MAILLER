@@ -1,4 +1,0 @@
-- hosts: terraform
-  become: yes
-  roles:
-      - role: './roles/JavaCaC'

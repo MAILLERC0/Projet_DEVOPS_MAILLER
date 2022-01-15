@@ -1,0 +1,30 @@
+#tasks
+- name: Install JAVA-11
+  become: yes
+  yum:
+    name: java-11-openjdk
+
+- name: Create user_java
+  become: yes
+  ansible.builtin.user:
+    name: user_java
+    comment: User java
+    group: admin
+    password: 
+
+- name: download jar
+  become: yes
+  get_url:
+    url: https://github.com/Ozz007/sb3t/releases/download/1.0/sb3t-ws-1.0.jar
+    dest: /home/user-java/
+
+- name: Run Jar with config
+  shell: 'java -jar /home/java_user/sb3t-ws-1.0.jar -Xmx 128M'
+  become_user : 'user_java'
+  async: 100
+ 
+
+
+
+
+
