@@ -13,16 +13,40 @@ pipeline {
         ansiColor('xterm')
     }
     stages {
-        stage('Job description') {
+        stage('Git'){
             steps {
-                script {
-                    println('Env var: ' + env.TEST)
-                    sh 'java --version'
-                    sh 'mvn --version'
-                    sh 'python3 --version'
-                    currentBuild.displayName = "#${BUILD_NUMBER} ${params.PARAM1}"
-                }
+                git 'https://github.com/Ozz007/sb3t'
             }
         }
+        stage('Build') { 
+            steps {
+                sh 'mvn clean compile'
+            }
+        }
+        stage('RUN Tests') { 
+            when {
+                expression {params.SKIP_TESTS == false}
+            }
+            steps {
+                sh 'mvn test'
+            }
+        }
+        stage('Jar creation') { 
+            steps {
+                sh 'mvn package'
+            }
+        }
+        stage('Move .jar in Jenkins Workspace'){                         
+            steps{  
+                sh "mv /var/jenkins_home/workspace/CI/Job1/sb3t-ws/target/sb3t-ws-1.0-SNAPSHOT.jar /var/jenkins_home/workspace/CI/Job1/${params.'VERSION'}-${params.'VERSION_TYPE'}"
+            }
+        }
+        
+        /* Try to load next job here --> failed/* Try to load next job here --> failed
+        stage('Terraform job loading') {
+            steps {
+                build job: '../../IaC/job2', parameters: [choice(name: 'action', value: 'apply')]
+            }
+        }*/
     }
 }

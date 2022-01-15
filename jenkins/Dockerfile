@@ -6,7 +6,7 @@
 #   Run -> docker run --name myjenkins -p 8080:8080 -p 50000:50000 jenkins-cust
 #
 FROM jenkins/jenkins:lts-jdk11
-MAINTAINER Ozz007 & Quintus
+#FROM ubuntu:latest
 
 # Disable setup wizard
 ENV JAVA_OPTS -Djenkins.install.runSetupWizard=false -Dpermissive-script-security.enabled=true
@@ -29,8 +29,33 @@ RUN apt-get update && \
    apt-get update && \
    apt-get -y install docker-ce
 
+RUN \
+# Update
+apt-get update -y && \
+# Install Unzip
+apt-get install unzip -y && \
+# need wget
+apt-get install wget -y && \
+# vim
+apt-get install vim -y
+
+################################
+# Install python
+################################
+
+RUN apt-get install -y python3-pip
+#RUN ln -s /usr/bin/python3 python
+RUN pip3 install --upgrade pip
+RUN python3 -V
+RUN pip --version
+
+RUN python3 -m pip install ansible; \
+    ansible-galaxy collection install azure.azcollection; \
+    pip3 install -r ~/.ansible/collections/ansible_collections/azure/azcollection/requirements-azure.txt
+
 # Load plugins w jenkins-plugin-cli
 COPY --chown=jenkins:jenkins conf/plugins.txt /usr/share/jenkins/ref/plugins.txt
+
 RUN jenkins-plugin-cli -f /usr/share/jenkins/ref/plugins.txt
 
 USER jenkins
