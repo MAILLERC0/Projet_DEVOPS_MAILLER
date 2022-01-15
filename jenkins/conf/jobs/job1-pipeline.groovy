@@ -41,10 +41,12 @@ pipeline {
                 sh "mv /var/jenkins_home/workspace/CI/Job1/sb3t-ws/target/sb3t-ws-1.0-SNAPSHOT.jar /var/jenkins_home/workspace/CI/Job1/${params.'VERSION'}-${params.'VERSION_TYPE'}"
             }
         }
+        
+        /* Try to load next job here --> failed/* Try to load next job here --> failed
         stage('Terraform job loading') {
             steps {
-                build job: 'job2-pipeline', parameters: [choice(name: 'action', value: 'apply')]
+                build job: '../../IaC/job2', parameters: [choice(name: 'action', value: 'apply')]
             }
-        }
+        }*/
     }
 }

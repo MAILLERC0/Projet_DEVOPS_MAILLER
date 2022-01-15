@@ -10,6 +10,11 @@ pipeline {
         ansiColor('xterm')
     }
     stages {
+        stage('Git'){
+            steps {
+                checkout([$class: 'GitSCM', branches: [[name: '*/main']], extensions: [], userRemoteConfigs: [[url: 'https://github.com/MAILLERC0/Projet_DEVOPS_MAILLER']]])   
+            }
+        }
         stage('mv terraform folder') {
             steps {
                 sh 'cp -r ./ansible/* .'
