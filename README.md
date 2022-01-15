@@ -35,4 +35,15 @@ notre application en entrée et vers tout le monde en sortie.
 nécessaire
 INFO : Le plugin Terraform à été ajouté dans Jenkins pour permettre son utilisation et l'outil à été configuré pour être utilisé (terraform-11)
 
-3. Pipeline de CaC --> En Cours
+3. Pipeline de CaC 
+Une pipeline jenkins permettant la configuration de l’instance via ansible.
+Le code ansible permet via l’utilisateur deploy créé dans la partie IaC :
+- D’installer java 11
+- De créer un user java_user pour le lancement de l’application java (jar)
+- D’installer le jar
+https://github.com/Ozz007/sb3t/releases/download/1.0/sb3t-ws-1.0.jar sur le serveur
+- De lancer l'application java (jar) avec la configuration suivante:
+- Taille de la jvm 128MB
+INFO : Le plugin Ansible à été ajouté dans Jenkins pour permettre son utilisation et l'outil à été configuré pour être utilisé (path jusqu'à l'ansible téléchargé dans le dockerfile)
+
+--> Lien repo GIT : https://github.com/MAILLERC0/Projet_DEVOPS_MAILLER 

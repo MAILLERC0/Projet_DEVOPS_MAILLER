@@ -62,7 +62,6 @@ resource "aws_security_group" "Resource_MAILLERC" {
   }
 }
 
-
   resource "aws_security_group" "Resource_MAILLERC_2" {
   name        = "Resource_MAILLERC_2"
 
