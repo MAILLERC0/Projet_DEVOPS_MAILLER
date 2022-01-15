@@ -4,13 +4,13 @@ def pipelineScript = new File('/var/jenkins_config/jobs/job3-pipeline.groovy').g
 
 pipelineJob('CaC/Job3') {
     description("Job Pipline 3 - Ansible")
-    parameters {    
+    /*parameters {    
         choice {
             name('action')
             choices(['apply', 'destroy'])
             description("apply or destroy")
         }
-    }
+    }*/
     definition {
         cps {
             script(pipelineScript)

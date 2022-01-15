@@ -1,7 +1,2 @@
-[host:vars]
-ansible_user=deploy
-ansible_port=22
-
-[host]
-52.14.128.183
-
+[terraform]
+IP PUBLIC ansible_ssh_private_key_file=./ssh/id_rsa
