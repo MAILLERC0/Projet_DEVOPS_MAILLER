@@ -23,6 +23,7 @@ La pipeline devra à les paramètres suivants :
 - VERSION_TYPE: SNAPSHOT ou RELEASE (renommer le jar)
 - VERSION: un string pour la version du jar (ex: SB3T-1.0-SNAPSHOT)
 
+
 2. Pipeline de IaC --> TERMINE
 Une pipeline jenkins permettant de générer une instance aws créée et explicitée via
 Terraform.
@@ -34,6 +35,8 @@ notre application en entrée et vers tout le monde en sortie.
 - Cloud init pour la création d’un user deploy et l’installation du paquet python si
 nécessaire
 INFO : Le plugin Terraform à été ajouté dans Jenkins pour permettre son utilisation et l'outil à été configuré pour être utilisé (terraform-11)
+ERR --> terraform apply ne fonctionne plus pour des raisons inconnues
+
 
 3. Pipeline de CaC 
 Une pipeline jenkins permettant la configuration de l’instance via ansible.
