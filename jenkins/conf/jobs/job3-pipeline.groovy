@@ -22,7 +22,7 @@ pipeline {
         }
         stage('RUN ansible') {
             steps {
-                sh 'ansible-playbook -i inventory --user deploy playbook_install_apache.yml'
+                sh 'ansible-playbook -i inventory --user deploy playbook_install_ansible.yml'
             }
         }
     }
