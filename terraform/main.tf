@@ -22,9 +22,9 @@ resource "aws_instance" "app_server" {
   ami                         = "ami-0d97ef13c06b05a19"
   instance_type               = "t2.micro"
   count                       = 1
-  key_name                    = "deployer_MAILLERC"
+  key_name                    = "deployer_MAILLERC_dev"
   associate_public_ip_address = "true"
-  vpc_security_group_ids      = [aws_security_group.SSH_MAILLERC.id,aws_security_group.HTTP_MAILLERC.id]
+  vpc_security_group_ids      = [aws_security_group.Resource_MAILLERC.id,aws_security_group.Resource_MAILLERC_2.id]
   user_data                   = data.template_file.user_data.rendered
 
   tags = {
@@ -35,16 +35,13 @@ resource "aws_instance" "app_server" {
 }
 
 resource "aws_key_pair" "deployer" {
-  key_name   = "deployer_MAILLERC"
+  key_name   = "deployer_MAILLERC_dev"
   public_key = file("./ssh/id_rsa.pub")
 }
 
-resource "aws_security_group" "SSH_MAILLERC" {
-  name        = "SSH_MAILLERC"
-  description = "Allow SSH inbound traffic"
-
+resource "aws_security_group" "Resource_MAILLERC" {
+  name        = "Resource_MAILLERC"
   ingress {
-    description      = "SSH from VPC"
     from_port        = 22
     to_port          = 22
     protocol         = "tcp"
@@ -58,19 +55,18 @@ resource "aws_security_group" "SSH_MAILLERC" {
     cidr_blocks      = ["0.0.0.0/0"]
     ipv6_cidr_blocks = ["::/0"]
   }
-
   tags = {
     Name   = var.instance_name
     Groups = "app"
     Owner  = "MAILLER Corentin"
   }
 }
-  resource "aws_security_group" "HTTP_MAILLERC" {
-  name        = "HTTP_MAILLERC"
-  description = "Allow HTTP for apache"
+
+
+  resource "aws_security_group" "Resource_MAILLERC_2" {
+  name        = "Resource_MAILLERC_2"
 
   ingress {
-    description      = "http from VPC"
     from_port        = 8080
     to_port          = 8080
     protocol         = "tcp"
