@@ -17,29 +17,11 @@ pipeline {
         }
         stage('mv terraform folder') {
             steps {
-                sh 'cp -r ./terraform/* .'
+                sh 'cp -r ./ansible/* .'
             }
         }
-        stage('Terraform init') { 
-            steps {
-                sh label: '', script: 'terraform init'
-            }
-        }
-        stage('Terraform fmt') { 
-            steps {
-                sh label: '', script: 'terraform fmt'
-            }
-        }
-        stage('Terraform validate') { 
-            steps {
-                sh label: '', script: 'terraform validate'
-            }
-        }
-        stage('Terraform apply/destroy') { 
-            steps {
-                sh 'ls'
-                sh label: '', script: 'terraform ${action} --auto-approve'
-            }
+        stage('Ansible'){
+            
         }
     }
 }

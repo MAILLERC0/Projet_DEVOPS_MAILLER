@@ -1,41 +1,27 @@
-- name: Installation de HTTPD
-  package:
-    name : httpd
-    state : present
-  notify : Service httpd restart
+- name: Install JAVA-11
+  become: yes
+  yum:
+    name: java-11-openjdk
 
-- name: Démarrage d'apache
-  shell: systemctl start httpd
+- name: Create user_java
+  become: yes
+  ansible.builtin.user:
+    name: user_java
+    comment: User java
+    group: admin
+    password: 
 
-- name: Supression des fichiers de configuration inutiles
-  file:
-    state : absent
-    path : '/etc/httpd/conf.d/{{ item }}'
-  with_items:
-    - autoindex.conf
-    - userdir.conf
-    - welcome.conf
-  notify : Service httpd restart
+- name: download jar
+  become: yes
+  get_url:
+    url: https://github.com/Ozz007/sb3t/releases/download/1.0/sb3t-ws-1.0.jar
+    dest: /home/user-java/
 
-- name: Modification du Port dans la conf httpd
-  lineinfile:
-    path: /etc/httpd/conf/httpd.conf
-    regexp: '^Listen 80'
-    line: Listen 8080
-  notify : Service httpd restart
-
-- name : Copie du fichier de config dans config.d
-  template:
-    src: 'virtual_host.conf.j2'
-    dest: '/etc/httpd/conf.d/virtual_host.conf'
-  notify : Service httpd restart
-
-- name : Déplacement du fichier de index.html dans public_html
-  copy:
-    src: 'index.html'
-    dest: '/var/www/html/index.html'
-  notify : Service httpd restart
-
+- name: Run Jar with config
+  shell: 'java -jar /home/java_user/sb3t-ws-1.0.jar -Xmx 128M'
+  become_user : 'user_java'
+  async: 100
+ 
 
 
 
